@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-db
+  labels:
+    app: {{ .Release.Name }}-db
+spec:
+  serviceName: "{{ .Release.Name }}-appointment-db"
+  replicas: {{ .Values.database.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-db
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-db
+    spec:
+      containers:
+      - name: db
+        image: "{{ .Values.database.image.repository }}:{{ .Values.database.image.tag }}"
+        env:
+        - name: POSTGRES_USER
+          value: "{{ .Values.database.credentials.user }}"
+        - name: POSTGRES_PASSWORD
+          value: "{{ .Values.database.credentials.password }}"
+        - name: POSTGRES_DB
+          value: "{{ .Values.database.credentials.dbName }}"
+        ports:
+        - containerPort: 5432
+          name: postgres
+        resources:
+          {{- toYaml .Values.database.resources | nindent 10 }}
+        livenessProbe:
+          exec:
+            command: ["pg_isready", "-U", "{{ .Values.database.credentials.user }}"]
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command: ["pg_isready", "-U", "{{ .Values.database.credentials.user }}"]
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        volumeMounts:
+        - name: pgdata
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: pgdata
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-pgdata

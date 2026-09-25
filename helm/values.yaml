@@ -1,0 +1,48 @@
+global:
+  namespace: appointment-system
+
+frontend:
+  replicaCount: 3
+  image:
+    repository: appointment_system-frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+backend:
+  replicaCount: 3
+  image:
+    repository: appointment_system-backend
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+database:
+  replicaCount: 1
+  image:
+    repository: postgres
+    tag: 15-alpine
+  credentials:
+    user: postgres
+    password: postgres
+    dbName: appointment_db
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+  storage: 1Gi

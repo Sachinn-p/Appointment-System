@@ -1,0 +1,11 @@
+# Node
+node_modules/
+npm-debug.log
+
+# Build output
+dist/
+build/
+
+# Docker
+Dockerfile
+.dockerignore
