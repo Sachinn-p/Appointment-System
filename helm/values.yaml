@@ -2,7 +2,7 @@ global:
   namespace: appointment-system
 
 frontend:
-  replicaCount: 3
+  replicaCount: 2
   image:
     repository: appointment_system-frontend
     tag: latest
