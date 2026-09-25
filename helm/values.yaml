@@ -46,3 +46,10 @@ database:
       cpu: 1000m
       memory: 1Gi
   storage: 1Gi
+
+ingress:
+  enabled: true
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+  host: appointment.local

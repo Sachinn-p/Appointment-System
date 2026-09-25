@@ -18,13 +18,9 @@ spec:
       containers:
       - name: db
         image: "{{ .Values.database.image.repository }}:{{ .Values.database.image.tag }}"
-        env:
-        - name: POSTGRES_USER
-          value: "{{ .Values.database.credentials.user }}"
-        - name: POSTGRES_PASSWORD
-          value: "{{ .Values.database.credentials.password }}"
-        - name: POSTGRES_DB
-          value: "{{ .Values.database.credentials.dbName }}"
+        envFrom:
+        - secretRef:
+            name: {{ .Release.Name }}-secrets
         ports:
         - containerPort: 5432
           name: postgres
