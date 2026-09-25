@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/your-username/appointment-system.git' # TODO: Replace with your actual Git repo URL
+    repoURL: 'https://github.com/Sachinn-p/Appointment-System.git'
     targetRevision: HEAD
     path: helm  # The directory containing your Chart.yaml
     helm:
