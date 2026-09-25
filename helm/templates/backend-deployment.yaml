@@ -39,13 +39,13 @@ spec:
           {{- toYaml .Values.backend.resources | nindent 10 }}
         livenessProbe:
           httpGet:
-            path: /
+            path: /healthz
             port: http
           initialDelaySeconds: 10
           periodSeconds: 15
         readinessProbe:
           httpGet:
-            path: /
+            path: /healthz
             port: http
           initialDelaySeconds: 10
           periodSeconds: 15

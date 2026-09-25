@@ -25,6 +25,14 @@ app.add_middleware(
 def read_root():
     return {"message": "Welcome to the Appointment System API"}
 
+@app.get("/healthz")
+def health_check(db: Session = Depends(get_db)):
+    try:
+        from sqlalchemy import text
+        db.execute(text("SELECT 1"))
+        return {"status": "healthy"}
+    except Exception as e:
+        raise HTTPException(status_code=503, detail="Database unavailable")
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
